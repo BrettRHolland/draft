@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 function Toolbar({ handleEdit }) {
@@ -148,7 +148,6 @@ const Wrapper = styled.div`
     height: auto;
     justify-content: center;
     margin: 0;
-    overflow: scroll;
     right: 0;
     top: unset;
     width: 100vw;
