@@ -1,14 +1,17 @@
 import { createGlobalStyle } from "styled-components";
 
+import PoppinsBold from "../fonts/Poppins-Bold.ttf";
+import PTSerifRegular from "../fonts/PTSerif-Regular.ttf";
+
 export const GlobalStyle = createGlobalStyle`
   @font-face {
   font-family: "Poppins Bold";
-  src: url("./fonts/Poppins-Bold.ttf") format("truetype");
+  src: url(${PoppinsBold}) format("truetype");
 }
 
 @font-face {
   font-family: "PT Serif Regular";
-  src: url("./fonts/PTSerif-Regular.ttf") format("truetype");
+  src: url(${PTSerifRegular}) format("truetype");
 }
 
 * {

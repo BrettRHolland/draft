@@ -24,7 +24,7 @@ function App() {
             <i className="far fa-moon"></i>
           )}
         </ThemeButton>
-        <Paper />
+        <Paper handleEdit={handleEdit} />
         <Toolbar handleEdit={handleEdit} />
       </Wrapper>
     </ThemeProvider>

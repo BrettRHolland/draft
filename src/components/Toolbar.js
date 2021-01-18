@@ -63,26 +63,20 @@ function Toolbar({ handleEdit }) {
 
       <Wrapper>
         <ContentWrapper>
-          <Button onClick={() => handleEdit("formatBlock", "p")}>
-            <i className="fas fa-paragraph"></i>
+          <Button onClick={() => console.log("paper")}>
+            <i className="fas fa-file-medical"></i>
           </Button>
-          <Button onClick={() => setIsModalShowing(true)}>
-            <i className="fas fa-heading"></i>
+          <Button onClick={() => console.log("folder")}>
+            <i className="fas fa-folder-plus"></i>
           </Button>
-          <Button onClick={() => handleEdit("bold")}>
-            <i className="fas fa-bold"></i>
+          <Button onClick={() => console.log("save")}>
+            <i className="far fa-save"></i>
           </Button>
-          <Button onClick={() => handleEdit("italic")}>
-            <i className="fas fa-italic"></i>
+          <Button onClick={() => console.log("files")}>
+            <i className="far fa-folder-open"></i>
           </Button>
-          <Button onClick={() => handleEdit("underline")}>
-            <i className="fas fa-underline"></i>
-          </Button>
-          <Button onClick={() => handleEdit("insertOrderedList")}>
-            <i className="fas fa-list-ol"></i>
-          </Button>
-          <Button onClick={() => handleEdit("insertUnorderedList")}>
-            <i className="fas fa-list-ul"></i>
+          <Button onClick={() => console.log("user")}>
+            <i className="far fa-user"></i>
           </Button>
         </ContentWrapper>
       </Wrapper>
@@ -170,7 +164,7 @@ const Button = styled.button`
   border: none;
   color: ${(props) => props.theme.color};
   cursor: pointer;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: bold;
   padding: 20px;
 
