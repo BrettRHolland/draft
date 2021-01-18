@@ -33,6 +33,60 @@ function Paper({ handleEdit }) {
 
   return (
     <>
+      {isModalShowing ? (
+        <ModalWrapper onClick={() => setIsModalShowing(false)}>
+          <ModalContentWrapper>
+            <ModalButton
+              onClick={() => {
+                handleEdit("formatBlock", "h1");
+                setIsModalShowing(false);
+              }}
+            >
+              Heading 1
+            </ModalButton>
+            <ModalButton
+              onClick={() => {
+                handleEdit("formatBlock", "h2");
+                setIsModalShowing(false);
+              }}
+            >
+              Heading 2
+            </ModalButton>
+            <ModalButton
+              onClick={() => {
+                handleEdit("formatBlock", "h3");
+                setIsModalShowing(false);
+              }}
+            >
+              Heading 3
+            </ModalButton>
+            <ModalButton
+              onClick={() => {
+                handleEdit("formatBlock", "h4");
+                setIsModalShowing(false);
+              }}
+            >
+              Heading 4
+            </ModalButton>
+            <ModalButton
+              onClick={() => {
+                handleEdit("formatBlock", "h5");
+                setIsModalShowing(false);
+              }}
+            >
+              Heading 5
+            </ModalButton>
+            <ModalButton
+              onClick={() => {
+                handleEdit("formatBlock", "h6");
+                setIsModalShowing(false);
+              }}
+            >
+              Heading 6
+            </ModalButton>
+          </ModalContentWrapper>
+        </ModalWrapper>
+      ) : null}
       <PencilBox ref={pencilBoxEl} visible={showPencilBox}>
         <Button onClick={() => handleEdit("formatBlock", "p")}>
           <i className="fas fa-paragraph"></i>
@@ -89,6 +143,46 @@ function Paper({ handleEdit }) {
     </>
   );
 }
+
+const ModalWrapper = styled.div`
+  align-items: center;
+  background-color: ${(props) => props.theme.modalBackgroundColor};
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 10;
+`;
+
+const ModalContentWrapper = styled.div`
+  background-color: ${(props) => props.theme.backgroundColor};
+`;
+
+const ModalButton = styled.button`
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid ${(props) => props.theme.borderColor};
+  color: ${(props) => props.theme.color};
+  cursor: pointer;
+  display: block;
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 20px 75px;
+
+  &:last-of-type {
+    border: none;
+  }
+
+  &:hover {
+    color: ${(props) => props.theme.hoverColor};
+  }
+`;
 
 const ContentWrapper = styled.div`
   margin: 0 auto;
