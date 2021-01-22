@@ -1,82 +1,79 @@
 import { createGlobalStyle } from "styled-components";
 
+import PoppinsRegular from "../fonts/Poppins-Regular.ttf";
 import PoppinsBold from "../fonts/Poppins-Bold.ttf";
+import PoppinsBoldItalic from "../fonts/Poppins-BoldItalic.ttf";
 import PTSerifRegular from "../fonts/PTSerif-Regular.ttf";
+import PTSerifBold from "../fonts/PTSerif-Bold.ttf";
+import PTSerifItalic from "../fonts/PTSerif-Italic.ttf";
+import PTSerifBoldItalic from "../fonts/PTSerif-BoldItalic.ttf";
 
 export const GlobalStyle = createGlobalStyle`
+
   @font-face {
-  font-family: "Poppins Bold";
-  src: url(${PoppinsBold}) format("truetype");
-}
+    font-family: "Poppins";
+    src: url(${PoppinsRegular}) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
 
-@font-face {
-  font-family: "PT Serif Regular";
-  src: url(${PTSerifRegular}) format("truetype");
-}
+  @font-face {
+    font-family: "Poppins";
+    src: url(${PoppinsBold}) format("truetype");
+    font-weight: 700;
+    font-style: normal;
+  }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  @font-face {
+    font-family: "Poppins";
+    src: url(${PoppinsBoldItalic}) format("truetype");
+    font-weight: 700;
+    font-style: italic;
+  }
 
-body {  
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: ${(props) => props.theme.backgroundColor};
-  color: ${(props) => props.theme.color};
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-}
+  @font-face {
+    font-family: "PT Serif";
+    src: url(${PTSerifRegular}) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
+  @font-face {
+    font-family: "PT Serif";
+    src: url(${PTSerifBold}) format("truetype");
+    font-weight: 700;
+    font-style: normal;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Poppins Bold", sans-serif;
-  line-height: 140%;
-  margin-bottom: 1.25rem;
-}
+  @font-face {
+    font-family: "PT Serif";
+    src: url(${PTSerifItalic}) format("truetype");
+    font-weight: 400;
+    font-style: italic;
+  }
 
-h1 {
-  font-size: 2.25rem;
-}
+  @font-face {
+    font-family: "PT Serif";
+    src: url(${PTSerifBoldItalic}) format("truetype");
+    font-weight: 700;
+    font-style: italic;
+  }
 
-h2 {
-  font-size: 2.125rem;
-}
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-h3 {
-  font-size: 1.75rem;
-}
-h4 {
-  font-size: 1.5rem;
-}
-h5 {
-  font-size: 1.375rem;
-}
-h6 {
-  font-size: 1.25rem;
-}
+  body {  
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: ${(props) => props.theme.backgroundColor};
+    color: ${(props) => props.theme.color};
+    font-family: "PT Serif", serif;
+  }
 
-p,
-div {
-  font-family: "PT Serif Regular", serif;
-  font-size: 1.25rem;
-  line-height: 180%;
-  margin-bottom: 1.25rem;
-}
-
-ul,
-ol {
-  padding-left: 2.5rem;
-}
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Poppins", sans-serif;
+  }
 `;

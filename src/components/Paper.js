@@ -1,10 +1,40 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import Toolbar from "./Toolbar";
 
-function Paper({ handleEdit }) {
+function Paper({
+  handleEdit,
+  handleNewDraft,
+  handleSaveClick,
+  openDraft,
+  setShowFiles,
+  showFiles,
+}) {
+  const [highlightSaveButton, setHighlightSaveButton] = useState(false);
   const [showPencilBox, setShowPencilBox] = useState(false);
-  const [isModalShowing, setIsModalShowing] = useState(false);
+  const [name, setName] = useState();
+  const [folder, setFolder] = useState();
+
   const pencilBoxEl = useRef(null);
+  const contentEl = useRef(null);
+
+  useEffect(() => {
+    if (
+      openDraft &&
+      contentEl.current.innerHTML === openDraft.body &&
+      name === openDraft.name &&
+      folder === openDraft.folder
+    ) {
+      setHighlightSaveButton(false);
+    } else {
+      setHighlightSaveButton(true);
+    }
+  }, [folder, name, openDraft]);
+
+  useEffect(() => {
+    setName(openDraft.name);
+    setFolder(openDraft.folder);
+  }, [openDraft]);
 
   const handleTextSelection = () => {
     let selection = window.getSelection();
@@ -18,7 +48,6 @@ function Paper({ handleEdit }) {
         .height;
       const pencilBoxWidth = pencilBoxEl.current.getBoundingClientRect().width;
       const centerPosition = (selectionWidth - pencilBoxWidth) / 2;
-      console.log(centerPosition);
       const horizontalAdjustment = centerPosition < 0 ? 0 : centerPosition;
 
       // set position of pencil box
@@ -31,77 +60,30 @@ function Paper({ handleEdit }) {
     }
   };
 
+  const handleInput = () => {
+    if (contentEl.current.innerHTML !== openDraft.body) {
+      setHighlightSaveButton(true);
+    } else {
+      setHighlightSaveButton(false);
+    }
+  };
+
   return (
     <>
-      {isModalShowing ? (
-        <ModalWrapper onClick={() => setIsModalShowing(false)}>
-          <ModalContentWrapper>
-            <ModalButton
-              onClick={() => {
-                handleEdit("formatBlock", "h1");
-                setIsModalShowing(false);
-              }}
-            >
-              Heading 1
-            </ModalButton>
-            <ModalButton
-              onClick={() => {
-                handleEdit("formatBlock", "h2");
-                setIsModalShowing(false);
-              }}
-            >
-              Heading 2
-            </ModalButton>
-            <ModalButton
-              onClick={() => {
-                handleEdit("formatBlock", "h3");
-                setIsModalShowing(false);
-              }}
-            >
-              Heading 3
-            </ModalButton>
-            <ModalButton
-              onClick={() => {
-                handleEdit("formatBlock", "h4");
-                setIsModalShowing(false);
-              }}
-            >
-              Heading 4
-            </ModalButton>
-            <ModalButton
-              onClick={() => {
-                handleEdit("formatBlock", "h5");
-                setIsModalShowing(false);
-              }}
-            >
-              Heading 5
-            </ModalButton>
-            <ModalButton
-              onClick={() => {
-                handleEdit("formatBlock", "h6");
-                setIsModalShowing(false);
-              }}
-            >
-              Heading 6
-            </ModalButton>
-          </ModalContentWrapper>
-        </ModalWrapper>
-      ) : null}
-      <PencilBox ref={pencilBoxEl} visible={showPencilBox}>
-        <Button onClick={() => handleEdit("formatBlock", "p")}>
-          <i className="fas fa-paragraph"></i>
+      <FormattingTools ref={pencilBoxEl} visible={showPencilBox}>
+        <Button onClick={() => handleEdit("formatBlock", "h1")}>H1</Button>
+        <Button onClick={() => handleEdit("formatBlock", "h2")}>H2</Button>
+        <Button onClick={() => handleEdit("formatBlock", "h3")}>H3</Button>
+        <Button onClick={() => handleEdit("formatBlock", "p")}>P</Button>
+        <Button onClick={() => handleEdit("bold")}>B</Button>
+        <Button italic onClick={() => handleEdit("italic")}>
+          I
         </Button>
-        <Button onClick={() => setIsModalShowing(true)}>
-          <i className="fas fa-heading"></i>
+        <Button underline onClick={() => handleEdit("underline")}>
+          U
         </Button>
-        <Button onClick={() => handleEdit("bold")}>
-          <i className="fas fa-bold"></i>
-        </Button>
-        <Button onClick={() => handleEdit("italic")}>
-          <i className="fas fa-italic"></i>
-        </Button>
-        <Button onClick={() => handleEdit("underline")}>
-          <i className="fas fa-underline"></i>
+        <Button onClick={() => handleEdit("hilitecolor", "#fff3bf")}>
+          <i className="fas fa-highlighter"></i>
         </Button>
         <Button onClick={() => handleEdit("insertOrderedList")}>
           <i className="fas fa-list-ol"></i>
@@ -109,79 +91,36 @@ function Paper({ handleEdit }) {
         <Button onClick={() => handleEdit("insertUnorderedList")}>
           <i className="fas fa-list-ul"></i>
         </Button>
-      </PencilBox>
+      </FormattingTools>
+
       <Wrapper onMouseUp={handleTextSelection}>
-        <ContentWrapper contentEditable suppressContentEditableWarning={true}>
-          <h1>The Lasting Lessons of John Conway’s Game of Life</h1>
-          <p>
-            In March of 1970, Martin Gardner opened a letter jammed with ideas
-            for his Mathematical Games column in Scientific American. Sent by
-            John Horton Conway, then a mathematician at the University of
-            Cambridge, the letter ran 12 pages, typed hunt-and-peck style.
-          </p>
-          <p>
-            Page 9 began with the heading “The game of life.” It described an
-            elegant mathematical model of computation — a cellular automaton, a
-            little machine, of sorts, with groups of cells that evolve from
-            iteration to iteration, as a clock advances from one second to the
-            next.
-          </p>
-          <p>
-            Dr. Conway, who died in April, having spent the latter part of his
-            career at Princeton, sometimes called Life a “no-player,
-            never-ending game.” Mr. Gardner called it a “fantastic solitaire
-            pastime.”
-          </p>
-          <p>
-            The game was simple: Place any configuration of cells on a grid,
-            then watch what transpires according to three rules that dictate how
-            the system plays out.
-          </p>
-        </ContentWrapper>
+        <ContentWrapper
+          contentEditable
+          dangerouslySetInnerHTML={{
+            __html: openDraft ? openDraft.body : null,
+          }}
+          onInput={handleInput}
+          ref={contentEl}
+          suppressContentEditableWarning={true}
+        ></ContentWrapper>
       </Wrapper>
+
+      <Toolbar
+        contentEl={contentEl}
+        folder={folder}
+        handleNewDraft={handleNewDraft}
+        handleSaveClick={handleSaveClick}
+        highlightSaveButton={highlightSaveButton}
+        name={name}
+        openDraft={openDraft}
+        setFolder={setFolder}
+        setName={setName}
+        setShowFiles={setShowFiles}
+        showFiles={showFiles}
+      />
     </>
   );
 }
-
-const ModalWrapper = styled.div`
-  align-items: center;
-  background-color: ${(props) => props.theme.modalBackgroundColor};
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 10;
-`;
-
-const ModalContentWrapper = styled.div`
-  background-color: ${(props) => props.theme.backgroundColor};
-`;
-
-const ModalButton = styled.button`
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid ${(props) => props.theme.borderColor};
-  color: ${(props) => props.theme.color};
-  cursor: pointer;
-  display: block;
-  font-size: 1rem;
-  font-weight: bold;
-  margin: 0;
-  padding: 20px 75px;
-
-  &:last-of-type {
-    border: none;
-  }
-
-  &:hover {
-    color: ${(props) => props.theme.hoverColor};
-  }
-`;
 
 const Wrapper = styled.div``;
 
@@ -195,9 +134,56 @@ const ContentWrapper = styled.div`
   &:focus {
     outline: none;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    line-height: 140%;
+    margin-bottom: 1.25rem;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    font-size: 2.125rem;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+  }
+  h4 {
+    font-size: 1.5rem;
+  }
+  h5 {
+    font-size: 1.375rem;
+  }
+  h6 {
+    font-size: 1.25rem;
+  }
+
+  p,
+  div {
+    font-family: "PT Serif", serif;
+    font-size: 1.25rem;
+    line-height: 180%;
+    margin-bottom: 1.25rem;
+  }
+
+  ul,
+  ol {
+    margin-bottom: 1.25rem;
+    padding-left: 2.5rem;
+  }
 `;
 
-const PencilBox = styled.div`
+const FormattingTools = styled.div`
   background-color: #343a40;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
@@ -211,12 +197,15 @@ const PencilBox = styled.div`
 const Button = styled.button`
   background-color: transparent;
   border: none;
-  border-right: 1px solid #212529;
   color: #f8f9fa;
   cursor: pointer;
+  font-family: "Poppins";
   font-size: 1.25rem;
+  font-style: ${(props) => (props.italic ? "italic" : "normal")};
   font-weight: bold;
-  padding: 15px;
+  height: 50px;
+  text-decoration: ${(props) => (props.underline ? "underline" : "none")};
+  width: 50px;
 
   &:hover {
     background-color: #212529;
@@ -224,19 +213,21 @@ const Button = styled.button`
   }
 
   &:first-of-type {
-    border-right: none;
     border-radius: 3px 0 0 3px;
   }
 
   &:last-of-type {
-    border-right: none;
     border-radius: 0 3px 3px 0;
   }
 
+  &:focus {
+    outline: none;
+  }
+
   @media (max-width: 670px) {
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 15px;
+    font-size: 0.75rem;
+    height: 40px;
+    width: 40px;
   }
 `;
 
